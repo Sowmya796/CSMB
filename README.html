@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tour Guide</h1>
+    <form id="tourForm">
+        <label for="city">Choose a City:</label>
+        <select id="city" name="city">
+            <option value="">Select a city</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Bengaluru">Bengaluru</option>
+        </select>
+        <label for="landmark">Choose a Landmark:</label>
+        <select id="landmark" name="landmark" disabled>
+            <option value="">Select a landmark</option>
+        </select>
+        <div class="error" id="errorMessage">Please select both a city and a landmark.</div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    const citySelect = document.getElementById('city');
+    const landmarkSelect = document.getElementById('landmark');
+    const errorMessage = document.getElementById('errorMessage');
+    const form = document.getElementById('tourForm');
+
+    const cityLandmarks = {
+        Hyderabad: ["Charminar", "Golconda Fort", "Hussain Sagar Lake"],
+        Bengaluru: ["Bangalore Palace", "Cubbon Park", "Vidhana Soudha"]
+    };
+
+    citySelect.addEventListener('change', function () {
+        const selectedCity = citySelect.value;
+        if (selectedCity) {
+            landmarkSelect.disabled = false;
+            const landmarks = cityLandmarks[selectedCity];
+            landmarkSelect.innerHTML = "<option value=''>Select a landmark</option>"; 
+            landmarks.forEach(landmark => {
+                const option = document.createElement('option');
+                option.value = landmark;
+                option.textContent = landmark;
+                landmarkSelect.appendChild(option);
+            });
+        } else {
+            landmarkSelect.disabled = true;
+            landmarkSelect.innerHTML = "<option value=''>Select a landmark</option>";
+        }
+    });
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const selectedCity = citySelect.value;
+        const selectedLandmark = landmarkSelect.value;
+        
+        if (!selectedCity || !selectedLandmark) {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+            alert(`You have selected ${selectedCity} and the landmark is ${selectedLandmark}.`);
+        }
+    });
+</script>
+
+</body>
+</html>
